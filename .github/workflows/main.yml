@@ -28,13 +28,13 @@ jobs:
         uses: nttld/setup-ndk@main
         id: setup-ndk
         with:
-          ndk-version: r15c
+          ndk-version: r21e
 
       - name: Setup Java JDK
         uses: actions/setup-java@main
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 18
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@main
@@ -42,27 +42,18 @@ jobs:
       - name: Setup Haxe
         uses: krdlab/setup-haxe@v1.2.0
         with:
-          haxe-version: 4.2.0
+          haxe-version: 4.2.5
 
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp 4.2.1 > /dev/null
-          haxelib install lime 7.9.0
-          haxelib install openfl 9.1.0
-          haxelib --never install flixel 4.11.0
-          haxelib run lime setup flixel
-          haxelib install flixel-tools
-          haxelib install flixel-ui
-          haxelib install flixel-addons 2.11.0
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hscript
-          haxelib git hxCodec https://github.com/SPLCoding/hxCodec-but-it-works-xd.git
-          haxelib git linc_luajit https://github.com/Sirox228/linc_luajit
+          sudo apt-get install libvlc-dev
+          sudo apt-get install libvlccore-dev
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
           haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
-          haxelib install hxcpp-debug-server
-          hãe
+          haxelib run hmm install
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -74,11 +65,6 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config ANDROID_SETUP true
-          haxelib set lime 7.9.0
-          haxelib set openfl 9.1.0
-          haxelib set flixel 4.11.0
-          haxelib set flixel-addons 2.11.0
-          haxelib set hxcpp 4.2.1
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
