@@ -99,7 +99,7 @@
 	</section>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 
-	<assets path="mobile" rename="assets/mobile" if="mobile" /> <!-- in order to not have the mobile assets in another builds -saw -->
+	<!--<assets path="mobile" rename="assets/mobile" if="mobile" /> <!-- in order to not have the mobile assets in another builds -saw -->
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
