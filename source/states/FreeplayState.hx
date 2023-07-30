@@ -16,6 +16,9 @@ import substates.ResetScoreSubState;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
+#if desktop
+import backend.Discord.DiscordClient;
+#end
 
 class FreeplayState extends MusicBeatState
 {

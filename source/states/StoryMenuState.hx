@@ -12,6 +12,9 @@ import objects.MenuCharacter;
 
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
+#if desktop
+import backend.Discord.DiscordClient;
+#end
 
 class StoryMenuState extends MusicBeatState
 {
