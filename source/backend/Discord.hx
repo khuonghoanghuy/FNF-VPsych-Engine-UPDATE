@@ -1,4 +1,4 @@
-#if desktop
+#if (desktop && !mobile)
 package backend;
 
 import Sys.sleep;

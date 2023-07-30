@@ -110,7 +110,7 @@
 	<!--Psych stuff needed-->
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
-	<haxelib name="discord_rpc" if="desktop" unless="neko || flash || hl" />
+	<haxelib name="discord_rpc" if="desktop" unless="neko || flash || hl | mobile" />
 	<haxelib name="tjson" />
 	<haxelib name="hscript" />
 	<define name="hscriptPos" />

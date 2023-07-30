@@ -176,6 +176,12 @@ class FreeplayState extends MusicBeatState
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
+
+		#if android
+		_pad = new FlxVirtualPad(FULL, A_B_X_Y);
+		_pad.alpha = 0.75;
+		this.add(_pad);
+		#end
 		
 		updateTexts();
 		super.create();
@@ -270,7 +276,7 @@ class FreeplayState extends MusicBeatState
 				holdTime = 0;
 			}
 
-			if(controls.UI_DOWN || controls.UI_UP)
+			if(controls.UI_DOWN || controls.UI_UP #if android || _pad.buttonUp.justPressed || _pad.buttonDown.justPressed #end)
 			{
 				var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
 				holdTime += elapsed;
@@ -287,18 +293,18 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		if (controls.UI_LEFT_P)
+		if (controls.UI_LEFT_P #if android || _pad.buttonLeft.justPressed #end)
 		{
 			changeDiff(-1);
 			_updateSongLastDifficulty();
 		}
-		else if (controls.UI_RIGHT_P)
+		else if (controls.UI_RIGHT_P #if android || _pad.buttonRight.justPressed #end)
 		{
 			changeDiff(1);
 			_updateSongLastDifficulty();
 		}
 
-		if (controls.BACK)
+		if (controls.BACK #if android || FlxG.android.justReleased.BACK #end)
 		{
 			persistentUpdate = false;
 			if(colorTween != null) {
@@ -308,12 +314,12 @@ class FreeplayState extends MusicBeatState
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		if(FlxG.keys.justPressed.CONTROL)
+		if(FlxG.keys.justPressed.CONTROL #if android || _pad.buttonX.justPressed #end)
 		{
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 		}
-		else if(FlxG.keys.justPressed.SPACE)
+		else if(FlxG.keys.justPressed.SPACE #if android || _pad.buttonY.justPressed #end)
 		{
 			if(instPlaying != curSelected)
 			{
@@ -339,7 +345,7 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		else if (controls.ACCEPT)
+		else if (controls.ACCEPT #if android || _pad.buttonA.justPressed #end)
 		{
 			persistentUpdate = false;
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
@@ -391,7 +397,7 @@ class FreeplayState extends MusicBeatState
 			DiscordClient.loadModRPC();
 			#end
 		}
-		else if(controls.RESET)
+		else if(controls.RESET #if android || _pad.buttonB.justPressed #end)
 		{
 			persistentUpdate = false;
 			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));

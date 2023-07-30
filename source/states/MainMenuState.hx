@@ -142,6 +142,12 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
+		#if android
+		_pad = new FlxVirtualPad(FULL, A_B_X_Y);
+		_pad.alpha = 0.75;
+		this.add(_pad);
+		#end
+
 		super.create();
 	}
 
@@ -167,26 +173,26 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			if (controls.UI_UP_P)
+			if (controls.UI_UP_P #if android || _pad.buttonUp.justPressed #end)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (controls.UI_DOWN_P)
+			if (controls.UI_DOWN_P #if android || _pad.buttonDown.justPressed #end)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
 			}
 
-			if (controls.BACK)
+			if (controls.BACK #if android || _pad.buttonB.justPressed #end)
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new TitleState());
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT #if android || _pad.buttonA.justPressed #end)
 			{
 				if (optionShit[curSelected] == 'donate')
 				{

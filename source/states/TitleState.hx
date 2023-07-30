@@ -84,6 +84,10 @@ class TitleState extends MusicBeatState
 		#end
 		Mods.loadTopMod();
 
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
@@ -397,7 +401,7 @@ class TitleState extends MusicBeatState
 			if (titleTimer > 2) titleTimer -= 2;
 		}
 
-		// EASTER EGG
+		// EASTER EGG 
 
 		if (initialized && !transitioning && skippedIntro)
 		{

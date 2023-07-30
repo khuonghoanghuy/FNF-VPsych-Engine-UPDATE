@@ -1,5 +1,6 @@
 package backend;
 
+import flixel.ui.FlxVirtualPad;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
@@ -11,6 +12,8 @@ class MusicBeatState extends FlxUIState
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
+
+	var _pad:FlxVirtualPad;
 
 	private var curDecStep:Float = 0;
 	private var curDecBeat:Float = 0;

@@ -19,11 +19,18 @@ class FlashingState extends MusicBeatState
 		add(bg);
 
 		warnText = new FlxText(0, 0, FlxG.width,
+			#if mobile
+			"Hey, watch out!\n
+			This Mod contains some flashing lights!\n
+			Tap the screen to continue\n
+			You've been warned!"
+			#else
 			"Hey, watch out!\n
 			This Mod contains some flashing lights!\n
 			Press ENTER to disable them now or go to Options Menu.\n
 			Press ESCAPE to ignore this message.\n
-			You've been warned!",
+			You've been warned!"
+			#end,
 			32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
@@ -34,6 +41,34 @@ class FlashingState extends MusicBeatState
 	{
 		if(!leftState) {
 			var back:Bool = controls.BACK;
+			#if mobile
+			for (touch in FlxG.touches.list)
+			{
+				if (touch.justPressed)
+					{
+						leftState = true;
+						FlxTransitionableState.skipNextTransIn = true;
+						FlxTransitionableState.skipNextTransOut = true;
+						ClientPrefs.data.flashing = false;
+						ClientPrefs.saveSettings();
+						FlxG.sound.play(Paths.sound('confirmMenu'));
+						FlxFlicker.flicker(warnText, 1, 0.1, false, true, function(flk:FlxFlicker) {
+							new FlxTimer().start(0.5, function (tmr:FlxTimer) {
+								MusicBeatState.switchState(new TitleState());
+							});
+						});
+					} 
+					else 
+					{
+						FlxG.sound.play(Paths.sound('cancelMenu'));
+						FlxTween.tween(warnText, {alpha: 0}, 1, {
+							onComplete: function (twn:FlxTween) {
+								MusicBeatState.switchState(new TitleState());
+							}
+						});
+					}
+			}
+			#else
 			if (controls.ACCEPT || back) {
 				leftState = true;
 				FlxTransitionableState.skipNextTransIn = true;
@@ -56,6 +91,7 @@ class FlashingState extends MusicBeatState
 					});
 				}
 			}
+			#end
 		}
 		super.update(elapsed);
 	}
