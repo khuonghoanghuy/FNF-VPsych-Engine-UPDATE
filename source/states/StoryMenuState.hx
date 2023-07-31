@@ -12,9 +12,9 @@ import objects.MenuCharacter;
 
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
-#if (desktop && !mobile)
+/*#if (desktop && !mobile)
 import backend.Discord.DiscordClient;
-#end
+#end*/
 
 class StoryMenuState extends MusicBeatState
 {
@@ -82,10 +82,10 @@ class StoryMenuState extends MusicBeatState
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
 
-		#if desktop
+		/*#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
-		#end
+		#end*/
 
 		var num:Int = 0;
 		for (i in 0...WeekData.weeksList.length)

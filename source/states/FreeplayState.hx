@@ -16,9 +16,9 @@ import substates.ResetScoreSubState;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
-#if (desktop && !mobile)
+/*#if (desktop && !mobile)
 import backend.Discord.DiscordClient;
-#end
+#end*/
 
 class FreeplayState extends MusicBeatState
 {
@@ -59,10 +59,10 @@ class FreeplayState extends MusicBeatState
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
 
-		#if desktop
+		/*#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
-		#end
+		#end*/
 
 		for (i in 0...WeekData.weeksList.length) {
 			if(weekIsLocked(WeekData.weeksList[i])) continue;
