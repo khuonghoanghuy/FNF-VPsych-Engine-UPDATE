@@ -81,7 +81,7 @@
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/superpowers04/linc_luajit.git"
+      "url": "https://github.com/polybiusproxy/linc_luajit.git"
     },
     {
       "name": "extension-androidtools",
