@@ -33,7 +33,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Display Play Rate',
-			"If checked, you can see the current playrate."
+			"If checked, you can see the current playrate.",
 			'displayPlayRate',
 			'bool');
 		addOption(option);
