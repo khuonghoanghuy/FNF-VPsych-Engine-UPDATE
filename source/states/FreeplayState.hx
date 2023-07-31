@@ -16,7 +16,7 @@ import substates.ResetScoreSubState;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
-#if desktop
+#if (desktop && !mobile)
 import backend.Discord.DiscordClient;
 #end
 

@@ -12,7 +12,7 @@ import objects.MenuCharacter;
 
 import substates.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
-#if desktop
+#if (desktop && !mobile)
 import backend.Discord.DiscordClient;
 #end
 
