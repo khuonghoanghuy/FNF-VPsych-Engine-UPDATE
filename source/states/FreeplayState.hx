@@ -393,9 +393,9 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.music.volume = 0;
 					
 			destroyFreeplayVocals();
-			#if MODS_ALLOWED
+			/*#if MODS_ALLOWED
 			DiscordClient.loadModRPC();
-			#end
+			#end*/
 		}
 		else if(controls.RESET #if android || _pad.buttonB.justPressed #end)
 		{

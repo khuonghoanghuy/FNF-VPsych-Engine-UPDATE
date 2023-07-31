@@ -1058,7 +1058,8 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.text = 'Score: ' + songScore
 		+ ' | Misses: ' + songMisses
-		+ ' | Rating: ' + str;
+		+ ' | Rating: ' + str
+		+ (ClientPrefs.data.displayPlayRate ? "PlayRate: " + playbackRate : "");
 
 		if(ClientPrefs.data.scoreZoom && !miss && !cpuControlled)
 		{
