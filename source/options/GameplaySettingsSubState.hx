@@ -32,12 +32,28 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'bool');
 		addOption(option);
 
-		var option:Option = new Option('Display Play Rate',
+		var option:Option = new Option('Display PlayRate',
 			"If checked, you can see the current playrate.",
 			'displayPlayRate',
 			'bool');
 		addOption(option);
-		
+
+		var option:Option = new Option('Display Score Type: ',
+			'Accuracy and Rating type, as same but the rank is not.',
+			'ratingType',
+			'string',
+			['Accuracy', 'Rating']);
+		addOption(option);
+		option.onChange = onChangeRatingType;
+
+		var option:Option = new Option('Gain Health Type: ',
+			'Select Gain Health Type, Kade may can be unfair for some songs.',
+			'gainHealthType',
+			'string',
+			['Kade', 'Psych']);
+		addOption(option);
+		option.onChange = onChangeGainHealth;
+
 		var option:Option = new Option('Auto Pause',
 			"If checked, the game automatically pauses if the screen isn't on focus.",
 			'autoPause',
@@ -124,5 +140,15 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	function onChangeAutoPause()
 	{
 		FlxG.autoPause = ClientPrefs.data.autoPause;
+	}
+
+	function onChangeRatingType()
+	{
+		ClientPrefs.data.ratingType = ClientPrefs.data.ratingType;
+	}
+
+	function onChangeGainHealth()
+	{
+		ClientPrefs.data.gainHealthType = ClientPrefs.data.gainHealthType;
 	}
 }

@@ -271,6 +271,12 @@ class Note extends FlxSprite
 			centerOrigin();
 		}
 		x += offsetX;
+
+		if (ClientPrefs.data.ghostMode){
+			visible = false;
+		}else{
+			visible = true;
+		}
 	}
 
 	public static function initializeGlobalRGBShader(noteData:Int)

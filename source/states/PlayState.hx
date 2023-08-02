@@ -10,6 +10,7 @@ package states;
 // "function eventEarlyTrigger" - Used for making your event start a few MILLISECONDS earlier
 // "function triggerEvent" - Called when the song hits your event's timestamp, this is probably what you were looking for
 
+import backend.Accuracy;
 import backend.Achievements;
 import backend.Highscore;
 import backend.StageData;
@@ -25,17 +26,13 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
-import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
 import flixel.animation.FlxAnimationController;
-import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.events.KeyboardEvent;
-import tjson.TJSON as Json;
 
 import psychlua.FunkinLua;
 
-import cutscenes.CutsceneHandler;
 import cutscenes.DialogueBoxPsych;
 
 import states.StoryMenuState;
@@ -45,11 +42,6 @@ import states.editors.CharacterEditorState;
 
 import substates.PauseSubState;
 import substates.GameOverSubstate;
-
-#if !flash 
-import flixel.addons.display.FlxRuntimeShader;
-import openfl.filters.ShaderFilter;
-#end
 
 #if sys
 import sys.FileSystem;
@@ -65,10 +57,10 @@ import sys.io.File;
 
 import objects.Note.EventNote;
 import objects.*;
-import states.stages.objects.*;
 
 #if LUA_ALLOWED
 import psychlua.*;
+import flixel.util.FlxSave;
 #else
 import psychlua.LuaUtils;
 #end
@@ -1050,16 +1042,26 @@ class PlayState extends MusicBeatState
 	public function updateScore(miss:Bool = false)
 	{
 		var str:String = ratingName;
+		
 		if(totalPlayed != 0)
 		{
-			var percent:Float = CoolUtil.floorDecimal(ratingPercent * 100, 2);
-			str += ' ($percent%) - $ratingFC';
+			switch (ClientPrefs.data.ratingType.toLowerCase())
+			{
+				case "accuracy":
+					var acc:Float = 0.00;
+					acc = totalNotesHit / totalPlayed * 100;
+					str = ' ' + Accuracy.truncateFloat(acc, 2) + '%';
+
+				default:
+					var percent:Float = CoolUtil.floorDecimal(ratingPercent * 100, 2);
+					str += ' ($percent%) - $ratingFC';
+			}
 		}
 
 		scoreTxt.text = 'Score: ' + songScore
 		+ ' | Misses: ' + songMisses
-		+ ' | Rating: ' + str
-		+ (ClientPrefs.data.displayPlayRate ? "PlayRate: " + playbackRate : "");
+		+ ' | ' + ClientPrefs.data.ratingType + ':' + str
+		+ (ClientPrefs.data.displayPlayRate ? " | PlayRate: " + playbackRate + "x" : "");
 
 		if(ClientPrefs.data.scoreZoom && !miss && !cpuControlled)
 		{
@@ -1143,6 +1145,10 @@ class PlayState extends MusicBeatState
 	private var eventsPushed:Array<String> = [];
 	private function generateSong(dataPath:String):Void
 	{
+		var oneK:Int = 0;
+
+		oneK = Std.int(FlxG.random.int(0, 3));
+
 		// FlxG.log.add(ChartParser.parse());
 		songSpeed = PlayState.SONG.speed;
 		songSpeedType = ClientPrefs.getGameplaySetting('scrolltype');
@@ -1153,6 +1159,9 @@ class PlayState extends MusicBeatState
 			case "constant":
 				songSpeed = ClientPrefs.getGameplaySetting('scrollspeed');
 		}
+
+		var randomKey:Bool = ClientPrefs.getGameplaySetting('randomNote', false);
+		var oneKey:Bool = ClientPrefs.getGameplaySetting('oneMode', false);
 
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
@@ -1193,8 +1202,21 @@ class PlayState extends MusicBeatState
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0];
-				var daNoteData:Int = Std.int(songNotes[1] % 4);
+				var daNoteData:Int = 0;
+
+				if (!randomKey || !oneKey) {
+					daNoteData = Std.int(songNotes[1] % 4);
+				}
+
 				var gottaHitNote:Bool = section.mustHitSection;
+
+				if (oneKey) {
+					daNoteData = oneK;
+				}
+				
+				if (randomKey) {
+					daNoteData = FlxG.random.int(0, 3);
+				}
 
 				if (songNotes[1] > 3)
 				{
@@ -2316,6 +2338,7 @@ class PlayState extends MusicBeatState
 	{
 		var uiPrefix:String = '';
 		var uiSuffix:String = '';
+		
 		if (stageUI != "normal")
 		{
 			uiPrefix = '${stageUI}UI/';
@@ -2323,9 +2346,14 @@ class PlayState extends MusicBeatState
 		}
 
 		for (rating in ratingsData)
+		{
 			Paths.image(uiPrefix + rating.image + uiSuffix);
+		}
+
 		for (i in 0...10)
+		{
 			Paths.image(uiPrefix + 'num' + i + uiSuffix);
+		}
 	}
 
 	private function popUpScore(note:Note = null):Void
@@ -2363,12 +2391,9 @@ class PlayState extends MusicBeatState
 		var uiSuffix:String = '';
 		var antialias:Bool = ClientPrefs.data.antialiasing;
 
-		if (stageUI != "normal")
-		{
-			uiPrefix = '${stageUI}UI/';
-			if (PlayState.isPixelStage) uiSuffix = '-pixel';
-			antialias = !isPixelStage;
-		}
+		uiPrefix = '${stageUI}UI/';
+		if (PlayState.isPixelStage) uiSuffix = '-pixel';
+		antialias = !isPixelStage;
 
 		rating.loadGraphic(Paths.image(uiPrefix + daRating.image + uiSuffix));
 		rating.cameras = [camHUD];
@@ -2829,13 +2854,28 @@ class PlayState extends MusicBeatState
 				return;
 			}
 
-			if (!note.isSustainNote)
+			switch (ClientPrefs.data.gainHealthType)
 			{
-				combo++;
-				if(combo > 9999) combo = 9999;
-				popUpScore(note);
+				case "Kade":
+					if (!note.isSustainNote)
+					{
+						combo++;
+						if(combo > 9999) combo = 9999;
+						popUpScore(note);
+
+						health += 0.0475 * healthGain;
+					}
+						
+				default:
+					if (!note.isSustainNote)
+					{
+						combo++;
+						if(combo > 9999) combo = 9999;
+						popUpScore(note);
+					}
+					else
+						health += note.hitHealth * healthGain;
 			}
-			health += note.hitHealth * healthGain;
 
 			if(!note.noAnimation) {
 				var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))];

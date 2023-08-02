@@ -67,7 +67,9 @@ class SaveVariables {
 		'instakill' => false,
 		'practice' => false,
 		'botplay' => false,
-		'opponentplay' => false
+		'opponentplay' => false,
+		'randomNote' => false,
+		'oneMode' => false
 	];
 
 	public var comboOffset:Array<Int> = [0, 0, 0, 0];
@@ -78,6 +80,12 @@ class SaveVariables {
 	public var safeFrames:Float = 10;
 	public var discordRPC:Bool = true;
 	public var displayPlayRate:Bool = false;
+	public var ghostMode:Bool = false;
+	public var hideCharBG:Bool = false;
+	public var lightOpponentStrums:Bool = true;
+	public var lightPlayerStrums:Bool = true;
+	public var ratingType:String = "Rating";
+	public var gainHealthType:String = "Psych";
 
 	public function new()
 	{
