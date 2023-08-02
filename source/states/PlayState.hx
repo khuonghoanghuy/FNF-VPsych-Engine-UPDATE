@@ -1143,7 +1143,7 @@ class PlayState extends MusicBeatState
 	var debugNum:Int = 0;
 	private var noteTypes:Array<String> = [];
 	private var eventsPushed:Array<String> = [];
-	
+
 	private function generateSong(dataPath:String):Void
 	{
 		var oneK:Int = 0;
@@ -2339,7 +2339,6 @@ class PlayState extends MusicBeatState
 	{
 		var uiPrefix:String = '';
 		var uiSuffix:String = '';
-		
 		if (stageUI != "normal")
 		{
 			uiPrefix = '${stageUI}UI/';
@@ -2347,14 +2346,9 @@ class PlayState extends MusicBeatState
 		}
 
 		for (rating in ratingsData)
-		{
 			Paths.image(uiPrefix + rating.image + uiSuffix);
-		}
-
 		for (i in 0...10)
-		{
 			Paths.image(uiPrefix + 'num' + i + uiSuffix);
-		}
 	}
 
 	private function popUpScore(note:Note = null):Void
@@ -2392,9 +2386,12 @@ class PlayState extends MusicBeatState
 		var uiSuffix:String = '';
 		var antialias:Bool = ClientPrefs.data.antialiasing;
 
-		uiPrefix = '${stageUI}UI/';
-		if (PlayState.isPixelStage) uiSuffix = '-pixel';
-		antialias = !isPixelStage;
+		if (stageUI != "normal")
+		{
+			uiPrefix = '${stageUI}UI/';
+			if (PlayState.isPixelStage) uiSuffix = '-pixel';
+			antialias = !isPixelStage;
+		}
 
 		rating.loadGraphic(Paths.image(uiPrefix + daRating.image + uiSuffix));
 		rating.cameras = [camHUD];
