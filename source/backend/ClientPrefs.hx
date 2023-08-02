@@ -69,7 +69,9 @@ class SaveVariables {
 		'botplay' => false,
 		'opponentplay' => false,
 		'randomNote' => false,
-		'oneMode' => false
+		'oneMode' => false,
+		'ghostMode' => false,
+		'floatCenter' => 2.0
 	];
 
 	public var comboOffset:Array<Int> = [0, 0, 0, 0];
@@ -80,7 +82,6 @@ class SaveVariables {
 	public var safeFrames:Float = 10;
 	public var discordRPC:Bool = true;
 	public var displayPlayRate:Bool = false;
-	public var ghostMode:Bool = false;
 	public var hideCharBG:Bool = false;
 	public var lightOpponentStrums:Bool = true;
 	public var lightPlayerStrums:Bool = true;

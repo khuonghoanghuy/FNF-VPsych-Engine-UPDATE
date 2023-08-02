@@ -272,7 +272,9 @@ class Note extends FlxSprite
 		}
 		x += offsetX;
 
-		if (ClientPrefs.data.ghostMode){
+		var ghostMode:Bool = ClientPrefs.getGameplaySetting('ghostMode', false);
+
+		if (ghostMode){
 			visible = false;
 		}else{
 			visible = true;
@@ -468,7 +470,9 @@ class Note extends FlxSprite
 
 	public function clipToStrumNote(myStrum:StrumNote)
 	{
-		var center:Float = myStrum.y + offsetY + Note.swagWidth / 2;
+		var floatCenter:Int = ClientPrefs.getGameplaySetting('floatCenter', 2.0);
+
+		var center:Float = myStrum.y + offsetY + Note.swagWidth / floatCenter;
 		if(isSustainNote && (mustPress || !ignoreNote) &&
 			(!mustPress || (wasGoodHit || (prevNote.wasGoodHit && !canBeHit))))
 		{
