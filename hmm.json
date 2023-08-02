@@ -47,10 +47,8 @@
     },
     {
       "name": "hxCodec",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/polybiusproxy/hxCodec.git"
+      "type": "haxelib",
+      "version": "2.5.1"
     },
     {
       "name": "hscript",
@@ -81,14 +79,7 @@
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/AndreiRudenko/linc_luajit.git"
-    },
-    {
-      "name": "extension-androidtools",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/MAJigsaw77/extension-androidtools"
+      "url": "https://github.com/nebulazorua/linc_luajit"
     }
   ]
 }

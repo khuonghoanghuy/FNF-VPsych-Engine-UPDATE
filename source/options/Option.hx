@@ -1,8 +1,10 @@
 package options;
 
+using StringTools;
+
 class Option
 {
-	public var child:Alphabet;
+	private var child:Alphabet;
 	public var text(get, set):String;
 	public var onChange:Void->Void = null; //Pressed enter (on Bool type options) or pressed/held left/right (on other types)
 
@@ -10,7 +12,9 @@ class Option
 	// Bool will use checkboxes
 	// Everything else will use a text
 
+	public var showBoyfriend:Bool = false;
 	public var scrollSpeed:Float = 50; //Only works on int/float, defines how fast it scrolls per second while holding left/right
+
 	private var variable:String = null; //Variable from ClientPrefs.hx
 	public var defaultValue:Dynamic = null;
 
@@ -25,13 +29,13 @@ class Option
 	public var description:String = '';
 	public var name:String = 'Unknown';
 
-	public function new(name:String, description:String = '', variable:String, type:String = 'bool', ?options:Array<String> = null)
+	public function new(name:String, description:String = '', variable:String, type:String = 'bool', defaultValue:Dynamic = 'null variable value', ?options:Array<String> = null)
 	{
 		this.name = name;
 		this.description = description;
 		this.variable = variable;
 		this.type = type;
-		this.defaultValue = Reflect.getProperty(ClientPrefs.defaultData, variable);
+		this.defaultValue = defaultValue;
 		this.options = options;
 
 		if(defaultValue == 'null variable value')
@@ -42,6 +46,8 @@ class Option
 					defaultValue = false;
 				case 'int' | 'float':
 					defaultValue = 0;
+				case 'super_float':
+					defaultValue = 0.000;
 				case 'percent':
 					defaultValue = 1;
 				case 'string':
@@ -71,6 +77,9 @@ class Option
 				maxValue = 1;
 				scrollSpeed = 0.5;
 				decimals = 2;
+
+			case 'super_float':
+				changeValue = 0.001;
 		}
 	}
 
@@ -84,11 +93,16 @@ class Option
 
 	public function getValue():Dynamic
 	{
-		return Reflect.getProperty(ClientPrefs.data, variable);
+		return Reflect.getProperty(ClientPrefs, variable);
 	}
 	public function setValue(value:Dynamic)
 	{
-		Reflect.setProperty(ClientPrefs.data, variable, value);
+		Reflect.setProperty(ClientPrefs, variable, value);
+	}
+
+	public function setChild(child:Alphabet)
+	{
+		this.child = child;
 	}
 
 	private function get_text()
@@ -111,7 +125,7 @@ class Option
 		var newValue:String = 'bool';
 		switch(type.toLowerCase().trim())
 		{
-			case 'int' | 'float' | 'percent' | 'string': newValue = type;
+			case 'int' | 'float' | 'percent' | 'string' | 'super_float': newValue = type;
 			case 'integer': newValue = 'int';
 			case 'str': newValue = 'string';
 			case 'fl': newValue = 'float';

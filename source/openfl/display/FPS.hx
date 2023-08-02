@@ -4,6 +4,7 @@ import haxe.Timer;
 import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import flixel.math.FlxMath;
 #if gl_stats
 import openfl.display._internal.stats.Context3DStats;
 import openfl.display._internal.stats.DrawCallContext;
@@ -31,11 +32,13 @@ class FPS extends TextField
 	**/
 	public var currentFPS(default, null):Int;
 
+	public var secondFPS(default, null):Int;
+
 	@:noCompletion private var cacheCount:Int;
 	@:noCompletion private var currentTime:Float;
 	@:noCompletion private var times:Array<Float>;
 
-	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000)
+	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000, size:Int = 14)
 	{
 		super();
 
@@ -43,9 +46,10 @@ class FPS extends TextField
 		this.y = y;
 
 		currentFPS = 0;
+		secondFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat("_sans", 14, color);
+		defaultTextFormat = new TextFormat("_sans", size, color);
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";
@@ -77,11 +81,13 @@ class FPS extends TextField
 
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
-		if (currentFPS > ClientPrefs.data.framerate) currentFPS = ClientPrefs.data.framerate;
+		secondFPS = Math.round(currentFPS + currentCount / 8);
+		if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
+		if (secondFPS < 10) secondFPS = 0;
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = "FPS: " + currentFPS;
+			text = "FPS: " + currentFPS + "." + secondFPS;
 			var memoryMegas:Float = 0;
 			
 			#if openfl
@@ -90,7 +96,7 @@ class FPS extends TextField
 			#end
 
 			textColor = 0xFFFFFFFF;
-			if (memoryMegas > 3000 || currentFPS <= ClientPrefs.data.framerate / 2)
+			if (memoryMegas > 3000 || currentFPS <= ClientPrefs.framerate / 2)
 			{
 				textColor = 0xFFFF0000;
 			}

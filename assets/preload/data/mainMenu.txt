@@ -1,0 +1,6 @@
+story_mode
+freeplay
+donate
+mods
+credits
+options

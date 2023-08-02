@@ -14,10 +14,6 @@ end
 
 
 -- Gameplay/Song interactions
-function onSectionHit()
-	-- triggered after it goes to the next section
-end
-
 function onBeatHit()
 	-- triggered 4 times per section
 end
@@ -40,21 +36,12 @@ function onStartCountdown()
 	return Function_Continue;
 end
 
-function onCountdownStarted()
-	-- called AFTER countdown started, if you want to stop it from starting, refer to the previous function (onStartCountdown)
-end
-
 function onCountdownTick(counter)
 	-- counter = 0 -> "Three"
 	-- counter = 1 -> "Two"
 	-- counter = 2 -> "One"
 	-- counter = 3 -> "Go!"
 	-- counter = 4 -> Nothing happens lol, tho it is triggered at the same time as onSongStart i think
-end
-
-function onSpawnNote(id, data, type, isSustainNote, strumTime)
-	--You can use id to get other properties from notes, for example:
-	--getPropertyFromGroup('notes', id, 'texture')
 end
 
 function onSongStart()
@@ -101,20 +88,6 @@ function onSkipDialogue(line)
 end
 
 
--- Key Press/Release
-function onKeyPress(key)
-	-- key can be: 0 - left, 1 - down, 2 - up, 3 - right
-end
-
-function onKeyRelease(key)
-	-- key can be: 0 - left, 1 - down, 2 - up, 3 - right
-end
-
-function onGhostTap(key)
-	-- key can be: 0 - left, 1 - down, 2 - up, 3 - right
-end
-
-
 -- Note miss/hit
 function goodNoteHit(id, direction, noteType, isSustainNote)
 	-- Function called when you hit a note (after note hit calculations)
@@ -157,15 +130,11 @@ end
 
 
 -- Event notes hooks
-function onEvent(name, value1, value2, strumTime)
+function onEvent(name, value1, value2)
 	-- event note triggered
 	-- triggerEvent() does not call this function!!
 
-	-- print('Event triggered: ', name, value1, value2, strumTime);
-end
-
-function onEventPushed(name, value1, value2, strumTime)
-	-- Called for every event note, recommended to precache assets
+	-- print('Event triggered: ', name, value1, value2);
 end
 
 function eventEarlyTrigger(name)
@@ -182,30 +151,7 @@ function eventEarlyTrigger(name)
 end
 
 
--- Custom Substates
-function onCustomSubstateCreate(name)
-	-- name is defined on "openCustomSubstate(name)"
-end
-
-function onCustomSubstateCreatePost(name)
-	-- name is defined on "openCustomSubstate(name)"
-end
-
-function onCustomSubstateUpdate(name, elapsed)
-	-- name is defined on "openCustomSubstate(name)"
-end
-
-function onCustomSubstateUpdatePost(name, elapsed)
-	-- name is defined on "openCustomSubstate(name)"
-end
-
-function onCustomSubstateDestroy(name)
-	-- name is defined on "openCustomSubstate(name)"
-	-- called when you use "closeCustomSubstate()"
-end
-
-
--- Tween/Timer/Sound hooks
+-- Tween/Timer hooks
 function onTweenCompleted(tag)
 	-- A tween you called has been completed, value "tag" is it's tag
 end
@@ -214,8 +160,4 @@ function onTimerCompleted(tag, loops, loopsLeft)
 	-- A loop from a timer you called has been completed, value "tag" is it's tag
 	-- loops = how many loops it will have done when it ends completely
 	-- loopsLeft = how many are remaining
-end
-
-function onSoundCompleted(tag)
-	-- Only called if you use playSound() with a tag
 end

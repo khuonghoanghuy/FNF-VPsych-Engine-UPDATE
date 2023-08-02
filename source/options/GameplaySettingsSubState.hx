@@ -1,76 +1,86 @@
 package options;
 
+#if desktop
+import Discord.DiscordClient;
+#end
+import flixel.FlxG;
+import flixel.text.FlxText;
+
+using StringTools;
+
 class GameplaySettingsSubState extends BaseOptionsMenu
 {
+	var versionShit:FlxText;
+
 	public function new()
 	{
 		title = 'Gameplay Settings';
 		rpcTitle = 'Gameplay Settings Menu'; //for Discord Rich Presence
 
-		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
-		var option:Option = new Option('Downscroll', //Name
-			'If checked, notes go Down instead of Up, simple enough.', //Description
-			'downScroll', //Save data variable name
-			'bool'); //Variable type
-		addOption(option);
-
-		var option:Option = new Option('Middlescroll',
-			'If checked, your notes get centered.',
-			'middleScroll',
-			'bool');
-		addOption(option);
-
-		var option:Option = new Option('Opponent Notes',
-			'If unchecked, opponent notes get hidden.',
-			'opponentStrums',
-			'bool');
+		var option:Option = new Option('Controller Mode',
+			'Check this if you want to play with\na controller instead of using your Keyboard.',
+			'controllerMode',
+			'bool',
+			false);
 		addOption(option);
 
 		var option:Option = new Option('Ghost Tapping',
 			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 			'ghostTapping',
-			'bool');
+			'bool',
+			true);
 		addOption(option);
 
-		var option:Option = new Option('Display PlayRate',
-			"If checked, you can see the current playrate.",
-			'displayPlayRate',
-			'bool');
+		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
+		var option:Option = new Option('Downscroll', //Name
+			'If checked, notes go Down instead of Up, simple enough.', //Description
+			'downScroll', //Save data variable name
+			'bool', //Variable type
+			false); //Default value
+		addOption(option);
+	
+		var option:Option = new Option('Middlescroll',
+			'If checked, your notes get centered.',
+			'middleScroll',
+			'bool',
+			false);
+		addOption(option);
+	
+		var option:Option = new Option('Opponent Notes',
+			'If unchecked, opponent notes get hidden.',
+			'opponentStrums',
+			'bool',
+			true);
 		addOption(option);
 
 		var option:Option = new Option('Display Score Type: ',
-			'Accuracy and Rating type, as same but the rank is not.',
+			'Accuracy and Rating type, as same but the rank is not',
 			'ratingType',
 			'string',
+			'Rating',
 			['Accuracy', 'Rating']);
 		addOption(option);
 		option.onChange = onChangeRatingType;
 
-		var option:Option = new Option('Gain Health Type: ',
-			'Select Gain Health Type, Kade may can be unfair for some songs.',
-			'gainHealthType',
-			'string',
-			['Kade', 'Psych']);
-		addOption(option);
-		option.onChange = onChangeGainHealth;
-
-		var option:Option = new Option('Auto Pause',
-			"If checked, the game automatically pauses if the screen isn't on focus.",
-			'autoPause',
-			'bool');
-		addOption(option);
-		option.onChange = onChangeAutoPause;
-
 		var option:Option = new Option('Disable Reset Button',
 			"If checked, pressing Reset won't do anything.",
 			'noReset',
-			'bool');
+			'bool',
+			false);
+		addOption(option);
+
+		var option:Option = new Option('Auto Zoom',
+			'If checked, cam will auto zoom without watting something hitting a note.',
+			'autoZoom',
+			'bool', 
+			false); 
 		addOption(option);
 
 		var option:Option = new Option('Hitsound Volume',
 			'Funny notes does \"Tick!\" when you hit them."',
 			'hitsoundVolume',
-			'percent');
+			'percent',
+			0);
 		addOption(option);
 		option.scrollSpeed = 1.6;
 		option.minValue = 0.0;
@@ -82,7 +92,8 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Rating Offset',
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
 			'ratingOffset',
-			'int');
+			'int',
+			0);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 20;
 		option.minValue = -30;
@@ -92,7 +103,8 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Sick! Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Sick!" in milliseconds.',
 			'sickWindow',
-			'int');
+			'int',
+			45);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 15;
 		option.minValue = 15;
@@ -102,7 +114,8 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Good Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Good" in milliseconds.',
 			'goodWindow',
-			'int');
+			'int',
+			90);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 30;
 		option.minValue = 15;
@@ -112,7 +125,8 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Bad Hit Window',
 			'Changes the amount of time you have\nfor hitting a "Bad" in milliseconds.',
 			'badWindow',
-			'int');
+			'int',
+			135);
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 60;
 		option.minValue = 15;
@@ -122,33 +136,53 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Safe Frames',
 			'Changes how many frames you have for\nhitting a note earlier or late.',
 			'safeFrames',
-			'float');
+			'float',
+			10);
 		option.scrollSpeed = 5;
 		option.minValue = 2;
 		option.maxValue = 10;
 		option.changeValue = 0.1;
 		addOption(option);
 
+		var option:Option = new Option('Icon Beat Type: ', 
+			"What icon beat type do you prefer?", 
+			'iconBeatType', 
+			'string', 
+			'Psych', 
+			['Style 1', 'Style 2', 'Base', 'Without Util', 'Psych']);
+		addOption(option);
+		option.onChange = onChangeIconBeat;
+
+		/*var option:Option = new Option('Gameplay UI Type: ',
+			"Change UI from Psych to Kade and Other.",
+			"uiHUD",
+			'string',
+			'Psych',
+			['Kade', 'Psych', 'Base', 'FPS Plus', 'Andromeda'] // so much
+		);
+		addOption(option);
+		option.onChange = onChangeUI;*/
+
 		super();
 	}
 
 	function onChangeHitsoundVolume()
 	{
-		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.data.hitsoundVolume);
-	}
-
-	function onChangeAutoPause()
-	{
-		FlxG.autoPause = ClientPrefs.data.autoPause;
+		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
 	}
 
 	function onChangeRatingType()
 	{
-		ClientPrefs.data.ratingType = ClientPrefs.data.ratingType;
+		ClientPrefs.ratingType = ClientPrefs.ratingType;
 	}
 
-	function onChangeGainHealth()
+	function onChangeUI()
 	{
-		ClientPrefs.data.gainHealthType = ClientPrefs.data.gainHealthType;
+		ClientPrefs.uiHUD = ClientPrefs.uiHUD;
+	}
+
+	function onChangeIconBeat()
+	{
+		ClientPrefs.iconBeatType = ClientPrefs.iconBeatType;
 	}
 }
