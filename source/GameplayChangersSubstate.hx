@@ -24,7 +24,6 @@ import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import Controls;
-import options.BotplayText;
 
 using StringTools;
 
@@ -93,14 +92,11 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 		var option:GameplayOption = new GameplayOption('Practice Mode', 'practice', 'bool', false);
 		optionsArray.push(option);
 
-		/*var option:GameplayOption = new GameplayOption('Enable Quick Options', 'enableQS', 'bool', true);
-		optionsArray.push(option);*/
-
 		var option:GameplayOption = new GameplayOption('Botplay', 'botplay', 'bool', false);
 		optionsArray.push(option);
 
-		/*var option:GameplayOption = new GameplayOption('Botplay Text', 'botText', 'string', 'BOTPLAY', [BotplayText.botplaytxt]);
-		optionsArray.push(option);*/
+		var option:GameplayOption = new GameplayOption('Note Place', 'note_place_changer', 'string', 'default', ['random', 'one key', 'default']);
+		optionsArray.push(option);
 	}
 
 	public function getOptionByName(name:String)

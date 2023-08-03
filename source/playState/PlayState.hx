@@ -98,6 +98,7 @@ typedef PostionCore = {
     var botplayTXT:String;
     var judgenmentCounterX:Float;
     var judgenmentCounterY:Float;
+
 	var strumX:Int;
 	var strumAsMiddleScroll:Int;
 	
@@ -400,7 +401,7 @@ class PlayState extends MusicBeatState
 		STRUM_X_MIDDLESCROLL = jsonShit.strumAsMiddleScroll;
 
 		// wow, alot
-		// tut: 'jsonShit.rat1', 'jsonShit.rat1_1' and to the other
+		// tutorial: 'jsonShit.rat1', 'jsonShit.rat1_1' and to the other
 		ratingStuff = [
 			[jsonShit.rat1, jsonShit.rat1_1],
 			[jsonShit.rat2, jsonShit.rat2_2],
@@ -2374,7 +2375,8 @@ class PlayState extends MusicBeatState
 		scoreTxt.text = 'Score: ' + songScore
 		+ ' | Misses: ' + songMisses
 		+ ' | Rating: ' + ratingName
-		+ (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%) - $ratingFC' : '');
+		+ (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%) - $ratingFC' : '')
+		+ (ClientPrefs.playRateDisplay ? 'PlayRate: '+ ClientPrefs.getGameplaySetting('scrollspeed', 1) : "");
 
 		if(ClientPrefs.scoreZoom && !miss && !cpuControlled)
 		{
@@ -2481,6 +2483,9 @@ class PlayState extends MusicBeatState
 	private var eventPushedMap:Map<String, Bool> = new Map<String, Bool>();
 	private function generateSong(dataPath:String):Void
 	{
+		var placeNote:String = ClientPrefs.getGameplaySetting('note_place_changer', 'default');
+		var oneK:Int = Std.int(FlxG.random.int(0, 3));
+
 		// FlxG.log.add(ChartParser.parse());
 		songSpeedType = ClientPrefs.getGameplaySetting('scrolltype','multiplicative');
 
@@ -2548,7 +2553,22 @@ class PlayState extends MusicBeatState
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0];
-				var daNoteData:Int = Std.int(songNotes[1] % 4);
+				var daNoteData:Int = 0;
+
+				switch (placeNote)
+				{
+					case "random":
+						daNoteData = FlxG.random.int(0, 3);
+
+					case "one key":
+						daNoteData = oneK;
+
+					case "default":
+						daNoteData = Std.int(songNotes[1] % 4);
+
+					default:
+						daNoteData = Std.int(songNotes[1] % 4);
+				}
 
 				var gottaHitNote:Bool = section.mustHitSection;
 
@@ -4478,10 +4498,13 @@ class PlayState extends MusicBeatState
 			}
 
 			var spr:StrumNote = playerStrums.members[key];
-			if(strumsBlocked[key] != true && spr != null && spr.animation.curAnim.name != 'confirm')
+			if (!ClientPrefs.botplayLight)
 			{
-				spr.playAnim('pressed');
-				spr.resetAnim = 0;
+				if(strumsBlocked[key] != true && spr != null && spr.animation.curAnim.name != 'confirm')
+				{
+					spr.playAnim('pressed');
+					spr.resetAnim = 0;
+				}
 			}
 			callOnLuas('onKeyPress', [key]);
 		}
@@ -4505,10 +4528,13 @@ class PlayState extends MusicBeatState
 		if(!cpuControlled && startedCountdown && !paused && key > -1)
 		{
 			var spr:StrumNote = playerStrums.members[key];
-			if(spr != null)
+			if (!ClientPrefs.botplayLight)
 			{
-				spr.playAnim('static');
-				spr.resetAnim = 0;
+				if(spr != null)
+				{
+					spr.playAnim('static');
+					spr.resetAnim = 0;
+				}
 			}
 			callOnLuas('onKeyRelease', [key]);
 		}
@@ -4738,7 +4764,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!note.wasGoodHit)
 		{
-			if(cpuControlled && (note.ignoreNote || note.hitCausesMiss)) return;
+			if (cpuControlled && (note.ignoreNote || note.hitCausesMiss)) return;
 
 			if (ClientPrefs.hitsoundVolume > 0 && !note.hitsoundDisabled)
 			{
@@ -4795,8 +4821,10 @@ class PlayState extends MusicBeatState
 				}
 				else
 				{
-					boyfriend.playAnim(animToPlay + note.animSuffix, true);
-					boyfriend.holdTimer = 0;
+					if (!ClientPrefs.botplayAmin) {
+						boyfriend.playAnim(animToPlay + note.animSuffix, true);
+						boyfriend.holdTimer = 0;
+					}
 				}
 
 				if(note.noteType == 'Hey!') {

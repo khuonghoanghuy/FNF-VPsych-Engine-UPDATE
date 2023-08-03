@@ -45,6 +45,12 @@ class ClientPrefs {
 	public static var autoZoom:Bool = false;
 	public static var scaleTextZoom:Float = 1.075;
 
+	public static var botplayLight:Bool = false;
+	public static var botplayScore:Bool = false;
+	public static var botplayAmin:Bool = false;
+
+	public static var playRateDisplay:Bool = false;
+
 	public static var count:Int = 0;
 
 	public static var gameplaySettings:Map<String, Dynamic> = [
@@ -65,7 +71,8 @@ class ClientPrefs {
 		'instakill' => false,
 		'practice' => false,
 		'botplay' => false,
-		'opponentplay' => false
+		'opponentplay' => false,
+		'note_place_changer' => 'default'
 	];
 
 	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
@@ -153,6 +160,12 @@ class ClientPrefs {
 		FlxG.save.data.uiHUD = uiHUD;
 		FlxG.save.data.autoZoom = autoZoom;
 		FlxG.save.data.scaleTextZoom = scaleTextZoom;
+
+		FlxG.save.data.botplayLight = botplayLight;
+		FlxG.save.data.botplayScore = botplayScore;
+		FlxG.save.data.botplayAmin = botplayAmin;
+
+		FlxG.save.data.playRateDisplay = playRateDisplay;
 	
 		FlxG.save.flush();
 
@@ -243,6 +256,11 @@ class ClientPrefs {
 		if (FlxG.save.data.uiHUD != null) uiHUD = FlxG.save.data.uiHUD;
 		if (FlxG.save.data.autoZoom != null) autoZoom = FlxG.save.data.autoZoom;
 		if (FlxG.save.data.scaleTextZoom != null) scaleTextZoom = FlxG.save.data.scaleTextZoom;
+
+		if (FlxG.save.data.botplayLight != null) botplayLight = FlxG.save.data.botplayLight;
+		if (FlxG.save.data.botplayScore != null) botplayScore = FlxG.save.data.botplayScore;
+		if (FlxG.save.data.botplayAmin != null) botplayAmin = FlxG.save.data.botplayAmin;
+		if (FlxG.save.data.playRateDisplay != null) playRateDisplay = FlxG.save.data.playRateDisplay;
 
 		var save:FlxSave = new FlxSave();
 		save.bind('controls_v2', CoolUtil.getSavePath());

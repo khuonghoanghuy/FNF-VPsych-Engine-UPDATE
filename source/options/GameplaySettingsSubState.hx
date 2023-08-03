@@ -53,14 +53,30 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Display Score Type: ',
-			'Accuracy and Rating type, as same but the rank is not',
+		var option:Option = new Option('Display accurate Type: ',
+			'Accuracy and Rating type, as same but the rank is not.',
 			'ratingType',
 			'string',
 			'Rating',
 			['Accuracy', 'Rating']);
 		addOption(option);
 		option.onChange = onChangeRatingType;
+
+		var option:Option = new Option('Icon Beat Type: ', 
+			"What icon beat type do you prefer?", 
+			'iconBeatType', 
+			'string', 
+			'Psych', 
+			['Style 1', 'Style 2', 'Base', 'Without Util', 'Psych']);
+		addOption(option);
+		option.onChange = onChangeIconBeat;
+
+		var option:Option = new Option('Display PlayRate',
+			"If checked, current playrate will display on gameplay.",
+			"playRateDisplay",
+			'bool',
+			false
+		);
 
 		var option:Option = new Option('Disable Reset Button',
 			"If checked, pressing Reset won't do anything.",
@@ -143,15 +159,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 10;
 		option.changeValue = 0.1;
 		addOption(option);
-
-		var option:Option = new Option('Icon Beat Type: ', 
-			"What icon beat type do you prefer?", 
-			'iconBeatType', 
-			'string', 
-			'Psych', 
-			['Style 1', 'Style 2', 'Base', 'Without Util', 'Psych']);
-		addOption(option);
-		option.onChange = onChangeIconBeat;
 
 		/*var option:Option = new Option('Gameplay UI Type: ',
 			"Change UI from Psych to Kade and Other.",
