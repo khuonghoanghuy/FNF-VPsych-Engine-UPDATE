@@ -88,6 +88,7 @@ class Main extends Sprite
 		}
 	
 		ClientPrefs.loadDefaultKeys();
+		SUtil.checkFiles();
 		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if !mobile
@@ -133,6 +134,7 @@ class Main extends Sprite
 		dateNow = dateNow.replace(":", "'");
 
 		ClientPrefs.count += 1;
+		SUtil.uncaughtErrorHandler();
 		path = "./crash/" + "crashLog " + dateNow + ".log";
 
 		for (stackItem in callStack)

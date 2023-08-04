@@ -29,7 +29,7 @@ using StringTools;
 class OptionsState extends MusicBeatState
 {
 	var options:Array<String> = [];
-	var arrayMAIN:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Visuals and UI', 'Gameplay', 'Botplay Setting'];
+	var arrayMAIN:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Visuals and UI', 'Graphics', 'Gameplay', 'Botplay Setting'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;

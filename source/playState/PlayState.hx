@@ -552,6 +552,7 @@ class PlayState extends MusicBeatState
 				directory: "",
 				defaultZoom: 0.9,
 				isPixelStage: false,
+				camSet: "LOCKON",
 
 				boyfriend: [770, 100],
 				girlfriend: [400, 130],
@@ -1176,7 +1177,18 @@ class PlayState extends MusicBeatState
 		}
 		add(camFollowPos);
 
-		FlxG.camera.follow(camFollowPos, LOCKON, 1);
+		var setCam:FlxCameraFollowStyle = FlxCameraFollowStyle.LOCKON;
+
+		// 4 cam can playable!
+		switch (stageData.camSet)
+		{
+			case "LOCKON": setCam = FlxCameraFollowStyle.LOCKON;
+			case "TOP-DOWN": setCam = FlxCameraFollowStyle.TOPDOWN;
+			case "TOP-DOWN-TIGHT": setCam = FlxCameraFollowStyle.TOPDOWN_TIGHT;
+			case "NO-DEAD-ZONE": setCam = FlxCameraFollowStyle.NO_DEAD_ZONE;
+		}
+
+		FlxG.camera.follow(camFollowPos, setCam, 1);
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow);
