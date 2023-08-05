@@ -1,5 +1,5 @@
 # From this https://github.com/MaysLastPlays-Ports/FNF-PsychEngine
-# and some recode from https://github.com/Stefan2008Git/FNF-SB-Engine
+
 # This is a basic workflow to help you get started with Actions
 
 name: Build
@@ -18,8 +18,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  BuildAndroid:
-    name: BuildAndroid
+
+  buildAndroid:
+    name: buildAndroid
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,13 +30,13 @@ jobs:
         uses: nttld/setup-ndk@main
         id: setup-ndk
         with:
-          ndk-version: r21e
+          ndk-version: r15c
 
       - name: Setup Java JDK
         uses: actions/setup-java@main
         with:
           distribution: 'zulu'
-          java-version: 18
+          java-version: 11
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@main
@@ -43,25 +44,26 @@ jobs:
       - name: Setup Haxe
         uses: krdlab/setup-haxe@v1.2.0
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.2.0
 
       - name: Install Haxelib
         run: |
-          haxelib --quiet setup /home/runner/haxelib
-          haxelib --quiet install hxcpp 4.2.1 > /dev/null
-          haxelib --quiet install lime 7.9.0
-          haxelib --quiet install openfl 9.1.0
-          haxelib --quiet install flixel
-          haxelib --quiet run lime setup flixel
-          haxelib --quiet install flixel-tools
-          haxelib --quiet install flixel-ui
-          haxelib --quiet install flixel-addons
-          haxelib --quiet install tjson
-          haxelib --quiet install hxjsonast
-          haxelib --quiet install hscript
-          haxelib --quiet git hxCodec https://github.com/SPLCoding/hxCodec-but-it-works-xd.git
-          haxelib --quiet git linc_luajit https://github.com/Sirox228/linc_luajit.git
-          haxelib --quiet git extension-androidtools https://github.com/MaysLastPlay77/extension-androidtools
+          haxelib setup ~/haxelib
+          haxelib install hxcpp 4.2.1 > /dev/null
+          haxelib install lime 7.9.0
+          haxelib install openfl 9.1.0
+          haxelib --never install flixel 4.11.0
+          haxelib run lime setup flixel
+          haxelib install flixel-tools
+          haxelib install flixel-ui
+          haxelib install flixel-addons 2.11.0
+          haxelib install tjson
+          haxelib install hxjsonast
+          haxelib install hscript
+          haxelib git hxCodec https://github.com/SPLCoding/hxCodec-but-it-works-xd.git
+          haxelib git linc_luajit https://github.com/Sirox228/linc_luajit
+          haxelib git extension-androidtools https://github.com/MaysLastPlay77/extension-androidtools
+          haxelib install hxcpp-debug-server
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -73,18 +75,19 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
           haxelib run lime config JAVA_HOME $JAVA_HOME
           haxelib run lime config ANDROID_SETUP true
-           haxelib set lime 7.9.0
+          haxelib set lime 7.9.0
           haxelib set openfl 9.1.0
+          haxelib set flixel 4.11.0
+          haxelib set flixel-addons 2.11.0
           haxelib set hxcpp 4.2.1
-          haxelib list
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
       - name: Compile
-        run: haxelib run lime build android --app-version="4.0.0-${{ github.run_id}}"
+        run: haxelib run lime build android -D NO_PRECOMPILED_HEADERS --app-version="4.0.0-${{ github.run_id}}"
 
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
-          name: VPE_AndroidPort
+          name: buildAndroid
           path: export/release/android/bin/app/build/outputs/apk/debug

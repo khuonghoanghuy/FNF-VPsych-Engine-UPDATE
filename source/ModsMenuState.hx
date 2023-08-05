@@ -254,58 +254,6 @@ class ModsMenuState extends MusicBeatState
 		// more buttons
 		var startX:Int = 1100;
 
-		/*
-		installButton = new FlxButton(startX, 620, "Install Mod", function()
-		{
-			installMod();
-		});
-		installButton.setGraphicSize(150, 70);
-		installButton.updateHitbox();
-		installButton.color = FlxColor.GREEN;
-		installButton.label.fieldWidth = 135;
-		installButton.label.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
-		setAllLabelsOffset(installButton, 2, 24);
-		add(installButton);
-		startX -= 180;
-
-		removeButton = new FlxButton(startX, 620, "Delete Selected Mod", function()
-		{
-			var path = haxe.io.Path.join([Paths.mods(), modsList[curSelected][0]]);
-			if(FileSystem.exists(path) && FileSystem.isDirectory(path))
-			{
-				trace('Trying to delete directory ' + path);
-				try
-				{
-					FileSystem.deleteFile(path); //FUCK YOU HAXE WHY DONT YOU WORK WAAAAAAAAAAAAH
-
-					var icon = mods[curSelected].icon;
-					var alphabet = mods[curSelected].alphabet;
-					remove(icon);
-					remove(alphabet);
-					icon.destroy();
-					alphabet.destroy();
-					modsList.remove(modsList[curSelected]);
-					mods.remove(mods[curSelected]);
-
-					if(curSelected >= mods.length) --curSelected;
-					changeSelection();
-				}
-				catch(e)
-				{
-					trace('Error deleting directory: ' + e);
-				}
-			}
-		});
-		removeButton.setGraphicSize(150, 70);
-		removeButton.updateHitbox();
-		removeButton.color = FlxColor.RED;
-		removeButton.label.fieldWidth = 135;
-		removeButton.label.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
-		setAllLabelsOffset(removeButton, 2, 15);
-		add(removeButton);
-		visibleWhenHasMods.push(removeButton);*/
-
-		///////
 		descriptionTxt = new FlxText(148, 0, FlxG.width - 216, "", 32);
 		descriptionTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT);
 		descriptionTxt.scrollFactor.set();
@@ -562,6 +510,9 @@ class ModsMenuState extends MusicBeatState
 				if (mod.restart){//finna make it to where if nothing changed then it won't reset
 					descriptionTxt.text += " (This Mod will restart the game!)";
 				}
+				if (mod.hasVersion){
+					descriptionTxt.text += "\nVersion: " + mod.version;
+				}
 
 				// correct layering
 				var stuffArray:Array<FlxSprite> = [/*removeButton, installButton,*/ selector, descriptionTxt, mod.alphabet, mod.icon];
@@ -712,6 +663,8 @@ class ModMetadata
 	public var description:String;
 	public var color:FlxColor;
 	public var restart:Bool;//trust me. this is very important
+	public var hasVersion:Bool;
+	public var version:String;
 	public var alphabet:Alphabet;
 	public var icon:AttachedSprite;
 
@@ -722,6 +675,8 @@ class ModMetadata
 		this.description = "No description provided.";
 		this.color = ModsMenuState.defaultColor;
 		this.restart = false;
+		this.hasVersion = false;
+		this.version = "0.0.0";
 
 		//Try loading json
 		var path = Paths.mods(folder + '/pack.json');
@@ -734,6 +689,8 @@ class ModMetadata
 					var description:String = Reflect.getProperty(stuff, "description");
 					var name:String = Reflect.getProperty(stuff, "name");
 					var restart:Bool = Reflect.getProperty(stuff, "restart");
+					var hasVersion:Bool = Reflect.getProperty(stuff, "hasVersion");
+					var version:String = Reflect.getProperty(stuff, 'version');
 
 				if(name != null && name.length > 0)
 				{
@@ -755,8 +712,13 @@ class ModMetadata
 				{
 					this.color = FlxColor.fromRGB(colors[0], colors[1], colors[2]);
 				}
+				if(version == 'version')
+				{
+					this.version = "0.0.0";
+				}
 
 				this.restart = restart;
+				this.hasVersion = hasVersion;
 				/*
 				if(stuff.name != null && stuff.name.length > 0)
 				{

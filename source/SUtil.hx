@@ -1,4 +1,3 @@
-#if android
 package;
 
 #if android
@@ -209,4 +208,3 @@ class SUtil
 	}
 	#end
 }
-#end
