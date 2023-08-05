@@ -11,6 +11,8 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
+import flixel.addons.plugin.ScreenShotPlugin;
+import flixel.input.keyboard.FlxKey;
 
 #if desktop
 import Discord.DiscordClient;
@@ -91,6 +93,7 @@ class Main extends Sprite
 		#if android
 		SUtil.checkFiles();
 		#end
+		ScreenShotPlugin.enabled = true;
 		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if !mobile

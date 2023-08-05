@@ -50,6 +50,8 @@ class ClientPrefs {
 	public static var botplayAmin:Bool = false;
 
 	public static var playRateDisplay:Bool = false;
+	public static var allowSaveFile:Bool = true;
+	public static var allowCaptureMouse:Bool = true;
 
 	public static var count:Int = 0;
 
@@ -166,6 +168,8 @@ class ClientPrefs {
 		FlxG.save.data.botplayAmin = botplayAmin;
 
 		FlxG.save.data.playRateDisplay = playRateDisplay;
+		FlxG.save.data.allowSaveFile = allowSaveFile;
+		FlxG.save.data.allowCaptureMouse = allowCaptureMouse;
 	
 		FlxG.save.flush();
 
@@ -261,6 +265,8 @@ class ClientPrefs {
 		if (FlxG.save.data.botplayScore != null) botplayScore = FlxG.save.data.botplayScore;
 		if (FlxG.save.data.botplayAmin != null) botplayAmin = FlxG.save.data.botplayAmin;
 		if (FlxG.save.data.playRateDisplay != null) playRateDisplay = FlxG.save.data.playRateDisplay;
+		if (FlxG.save.data.allowSaveFile != null) allowSaveFile = FlxG.save.data.allowSaveFile;
+		if (FlxG.save.data.allowCaptureMouse != null) allowCaptureMouse = FlxG.save.data.allowCaptureMouse;
 
 		var save:FlxSave = new FlxSave();
 		save.bind('controls_v2', CoolUtil.getSavePath());

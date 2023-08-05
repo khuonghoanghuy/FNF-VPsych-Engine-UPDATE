@@ -712,10 +712,6 @@ class ModMetadata
 				{
 					this.color = FlxColor.fromRGB(colors[0], colors[1], colors[2]);
 				}
-				if(version == 'version')
-				{
-					this.version = "0.0.0";
-				}
 
 				this.restart = restart;
 				this.hasVersion = hasVersion;

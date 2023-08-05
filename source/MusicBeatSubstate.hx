@@ -12,12 +12,18 @@ import flixel.FlxCamera;
 import flixel.input.actions.FlxActionInput;
 import flixel.util.FlxDestroyUtil;
 #end
+// import flixel.addons.plugin.screengrab.FlxScreenGrab;
 
 class MusicBeatSubstate extends FlxSubState
 {
+	// var capture:FlxScreenGrab;
+
 	public function new()
 	{
 		super();
+
+		// capture.defineHotKeys([F1], ClientPrefs.allowSaveFile, ClientPrefs.allowCaptureMouse);
+		// capture.defineCaptureRegion(0, 0, FlxG.width, FlxG.height);
 	}
 
 	private var lastBeat:Float = 0;

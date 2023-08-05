@@ -22,6 +22,8 @@ import flixel.FlxCamera;
 import flixel.input.actions.FlxActionInput;
 import flixel.util.FlxDestroyUtil;
 #end
+import flixel.addons.plugin.ScreenShotPlugin;
+import flixel.input.keyboard.FlxKey;
 
 class MusicBeatState extends FlxUIState
 {
@@ -136,6 +138,8 @@ class MusicBeatState extends FlxUIState
 		#end
 	}
 
+	// var capture:FlxScreenGrab;
+
 	override function create() {
 		camBeat = FlxG.camera;
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
@@ -145,11 +149,14 @@ class MusicBeatState extends FlxUIState
 			openSubState(new CustomFadeTransition(0.7, true));
 		}
 		FlxTransitionableState.skipNextTransOut = false;
+		ScreenShotPlugin.screenshotKeys = [FlxKey.F1];
+		ScreenShotPlugin.saveFormat = PNG;
 	}
 
 	override function update(elapsed:Float)
 	{
 		//everyStep();
+
 		var oldStep:Int = curStep;
 
 		updateCurStep();
