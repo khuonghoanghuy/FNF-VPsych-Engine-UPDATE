@@ -193,7 +193,7 @@ class SUtil
 			FileSystem.createDirectory(SUtil.getStorageDirectory() + 'saves');
 
 		File.saveContent(SUtil.getStorageDirectory() + 'saves/' + fileName + fileExtension, fileData);
-		SUtil.applicationAlert('Done!', 'File Saved Successfully!');
+		Lib.application.window.alert('Done!', 'File Saved Successfully!');
 	}
 
 	public static function copyContent(copyPath:String, savePath:String):Void
