@@ -24,6 +24,7 @@ using StringTools;
  */
 class SUtil
 {
+	#if mobile
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
@@ -35,6 +36,7 @@ class SUtil
 		return LimeSystem.applicationStorageDirectory;
 		#end
 	}
+	#end
 
 	/**
 	 * A simple function that checks for game files/folders.

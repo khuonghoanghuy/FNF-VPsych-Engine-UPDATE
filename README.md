@@ -1,14 +1,21 @@
-# Friday Night Funkin' - VPsych Engine
+# Friday Night Funkin' - VPsych Engine **UPDATE**
+![](vPsychEngineLogo.png) `logo draw by Stefan!`
+
 VPsych Engine is a Custom FNF Psych Engine with some new stuff can be on VPsych Engine
 
 VPsych Engine like a Addons of Psych Engine `I Think`, but that can be real `I Think`
 
-VPsych Engine contains:
+On this update, they will have more feature such like REPLAY?, new Options Selection,...
+
+# **UPDATE** version feature
 - New Options, Main Menu, Story Mode,... Menu Look!
 - More Setting Can be change though Options Menu
 - You can now open Setting as `Quick Setting` when you Pause Game
 - You can now edit Note Sustain Hold by using `floatCenter.txt` in `assets/data/` folder
-- You can now added/remove main selection on Main Menu by using `mainMenu.txt` in `assets/data/` folder 
+- You can now added/remove main selection on Main Menu by using `mainMenu.txt` in `assets/data/` folder
+- ANDROID PORT YEAHHH!!
+- ScreenShot Plugin (Only in DEBUG?)
+- Botplay Setting and new Selection by press `1/2`
 
 And much more of this engine!
 

@@ -59,7 +59,7 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-        optionShit = CoolUtil.coolTextFile(Paths.txt("mainMenu"));
+        optionShit = CoolUtil.coolTextFile(#if mobile SUtil.getStorageDirectory() + #end Paths.txt("mainMenu"));
 		// postionShit = CoolUtil.coolTextFile(Paths.txt("mainMenuPos"));
 		
 		#if MODS_ALLOWED
@@ -175,6 +175,10 @@ class MainMenuState extends MusicBeatState
 				ClientPrefs.saveSettings();
 			}
 		}
+		#end
+
+		#if mobile
+		addVirtualPad(UP_DOWN, A_B_E);
 		#end
 
 		super.create();

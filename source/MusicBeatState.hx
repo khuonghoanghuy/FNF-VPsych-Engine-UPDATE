@@ -148,9 +148,11 @@ class MusicBeatState extends FlxUIState
 		if(!skip) {
 			openSubState(new CustomFadeTransition(0.7, true));
 		}
+		#if desktop
 		FlxTransitionableState.skipNextTransOut = false;
 		ScreenShotPlugin.screenshotKeys = [FlxKey.F1];
 		ScreenShotPlugin.saveFormat = PNG;
+		#end
 	}
 
 	override function update(elapsed:Float)

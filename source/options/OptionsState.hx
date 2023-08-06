@@ -29,7 +29,8 @@ using StringTools;
 class OptionsState extends MusicBeatState
 {
 	var options:Array<String> = [];
-	var arrayMAIN:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Visuals and UI', 'Graphics', 'Gameplay', 'Botplay Setting', 'ScreenShot Setting'];
+	var arrayMAIN:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Visuals and UI', 'Graphics', 'Gameplay'];
+	var arraySETTING:Array<String> = ['Botplay Setting', 'ScreenShot Setting'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -92,6 +93,11 @@ class OptionsState extends MusicBeatState
 		changeSelection();
 		ClientPrefs.saveSettings();
 
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Press ONE/TWO to open First/Next Selection", 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+
 		super.create();
 	}
 
@@ -118,6 +124,16 @@ class OptionsState extends MusicBeatState
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
 		}
+
+		if (FlxG.keys.justPressed.TWO) {
+			options = arraySETTING;
+			regenMenu();
+		}
+
+		if (FlxG.keys.justPressed.ONE) {
+			options = arrayMAIN;
+			regenMenu();
+		}
 	}
 	
 	function changeSelection(change:Int = 0) {
@@ -143,5 +159,26 @@ class OptionsState extends MusicBeatState
 			}
 		}
 		FlxG.sound.play(Paths.sound('scrollMenu'));
+	}
+
+	function regenMenu()
+	{
+		for (i in 0...grpOptions.members.length) {
+			var obj = grpOptions.members[0];
+			obj.kill();
+			grpOptions.remove(obj, true);
+			obj.destroy();
+		}
+
+		for (i in 0...options.length)
+		{
+			var optionText:Alphabet = new Alphabet(0, 0, options[i], true);
+			optionText.screenCenter();
+			optionText.y += (100 * (i - (options.length / 2))) + 50;
+			grpOptions.add(optionText);
+		}
+
+		curSelected = 0;
+		changeSelection();
 	}
 }
