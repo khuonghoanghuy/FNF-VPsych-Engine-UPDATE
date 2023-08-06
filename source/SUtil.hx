@@ -187,6 +187,15 @@ class SUtil
 		}
 	}
 
+	public static function saveContent(fileName:String = 'file', fileExtension:String = '.json', fileData:String = 'you forgot something to add in your code')
+	{
+		if (!FileSystem.exists(SUtil.getStorageDirectory() + 'saves'))
+			FileSystem.createDirectory(SUtil.getStorageDirectory() + 'saves');
+
+		File.saveContent(SUtil.getStorageDirectory() + 'saves/' + fileName + fileExtension, fileData);
+		SUtil.applicationAlert('Done!', 'File Saved Successfully!');
+	}
+
 	public static function copyContent(copyPath:String, savePath:String):Void
 	{
 		try
