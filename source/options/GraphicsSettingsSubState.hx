@@ -50,7 +50,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 		option.minValue = 60;
 		#if mobile
-		option.maxValue = 120;
+		option.maxValue = 140;
 		#else
 		option.maxValue = 800;
 		#end
